@@ -1,18 +1,22 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div>App
+    <hr>
+  <router-view></router-view>
+    <hr>
+    <div>
+      <router-link to="/money">记账</router-link>|
+      <router-link to="/labels">标签</router-link>|
+      <router-link to="/statistics">统计</router-link>
+
     </div>
-    <router-view/>
   </div>
 </template>
 
 <style lang="scss">
-@import '~@/assets/styles/test';
-body{
-  background: $red;
-}
+//@import '~@/assets/styles/test';
+//body{
+//  background: $red;
+//}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
