@@ -4,6 +4,7 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import Nav from '@/components/Nav.vue';
+import Home from '@/views/Home'
 
 Vue.config.productionTip = false
 Vue.component('Nav',Nav)
