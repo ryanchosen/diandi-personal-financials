@@ -4,10 +4,6 @@
   </div>
 </template>
 <style lang="scss">
-//@import '~@/assets/styles/test';
-//body{
-//  background: $red;
-//}
 *{
   margin:0;
   padding:0;
