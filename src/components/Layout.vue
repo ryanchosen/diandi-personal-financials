@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-wrapper" :class="classPrefix&& `${classPrefix}-wrapper`">
+  <div class="layout-wrapper" :class="classPrefix&& `${classPrefix}-wrapper`">
     <div class="content" :class="classPrefix&& `${classPrefix}-content`">
       <slot></slot>
     </div>
@@ -15,13 +15,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.nav-wrapper {
+.layout-wrapper {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
-.nav-wrapper > .content {
+.layout-wrapper > .content {
   flex-grow: 1;
   overflow: auto;
 }
