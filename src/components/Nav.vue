@@ -44,10 +44,9 @@ nav {
       width: 32px;
       height: 32px;
     }
-  }
-
-  > .item.selected {
-    color: $color-hightlight
+    &.selected {
+      color: $color-highlight
+    }
   }
 }
 </style>
