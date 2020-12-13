@@ -2,18 +2,25 @@
   <div>
     <label class="notes">
       <span class="name">备注</span>
-      <input type="text" placeholder="在这里输入备注" v-model="value">
+      <input type="text" placeholder="在这里输入备注" v-model="localNote">
     </label>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Prop, Watch} from 'vue-property-decorator';
 
 @Component
 export default class Notes extends Vue {
-  value='';
+  @Prop() note: string
+  localNote=this.note;
+
+  // 以下三句话都是Watch装饰器的用法
+  @Watch('localNote')
+  onLocalNoteChanged(value){
+    this.$emit('update:note',value)
+  }
 }
 </script>
 
