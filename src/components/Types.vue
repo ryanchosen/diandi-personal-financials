@@ -7,24 +7,22 @@
   </div>
 </template>
 
-<script lang="js">
-export default {
-  name: 'Types',
-  data() {
-    return {
-      type: '-' //  减号支出，加号收入
-    };
-  },
-  methods:{
-    selectType(type){
-      if(type!=='-'&&type!=='+'){
-        throw new Error('type is unknown') // 健壮性
-      }
-      this.type =type;
+<script lang="ts">
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
 
+@Component
+export default class Types extends Vue {
+  type= '-'; //  减号支出，加号收入
+  selectType(type: string) {
+    if (type !== '-' && type !== '+') {
+      throw new Error('type is unknown'); // 健壮性
     }
+    this.type = type;
   }
-};
+
+}
+
 </script>
 
 <style lang="scss" scoped>

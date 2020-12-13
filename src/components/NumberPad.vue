@@ -1,15 +1,15 @@
 <template>
   <div class="numberPad">
-    <div class="output">100</div>
-    <div class="buttons">
+    <div class="output">{{ output }}</div>
+    <div class="buttons" @click="inputContent">
       <button>1</button>
       <button>2</button>
       <button>3</button>
-      <button>删除</button>
+      <button @click="remove">删除</button>
       <button>4</button>
       <button>5</button>
       <button>6</button>
-      <button>清空</button>
+      <button @click="clear">清空</button>
       <button>7</button>
       <button>8</button>
       <button>9</button>
@@ -21,13 +21,47 @@
 </template>
 
 <script lang="ts">
-export default {
-name: "NumberPad"
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
+
+@Component
+export default class NumberPad extends Vue {
+  output = '0';
+  str='0123456789.';
+  remove(){
+    const currentOutput=this.output;
+    this.output=currentOutput.substring(0,currentOutput.length-1);
+  }
+  clear(){
+    this.output='0'
+  }
+  inputContent(e: MouseEvent) {
+    const inputContent=e.target.innerText;
+    const output=this.output;
+    if(this.str.indexOf(inputContent)===-1){return}
+    if(output.length===16){return}
+    if(output==='0'){
+      if(inputContent==='.'){
+        this.output+=inputContent;
+      }else{
+        this.output=inputContent
+      }
+    }else{
+      if([...output.matchAll(/\./g)].length===0){
+          this.output+=inputContent;
+      }else if([...output.matchAll(/\./g)].length===1){
+        if(inputContent!=='.'){
+          this.output+=inputContent;
+        }
+      }
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "~@/assets/styles/helper.scss";
+
 .numberPad {
   .output {
     @extend %innerShadow;
@@ -35,6 +69,7 @@ name: "NumberPad"
     font-family: Consolas, monospace;
     padding: 9px 16px;
     text-align: right;
+    min-height: 72px;
   }
 
   .buttons {
@@ -45,6 +80,7 @@ name: "NumberPad"
       height: 64px;
       float: left;
       font-size: 18px;
+
       &.ok {
         height: 64*2px;
         float: right;
