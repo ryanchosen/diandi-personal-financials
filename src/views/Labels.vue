@@ -19,7 +19,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import {tagListModel} from '@/model/tagListModel';
 import Button from '@/components/Button.vue';
 
 
@@ -27,18 +26,11 @@ import Button from '@/components/Button.vue';
   components: {Button}
 })
 export default class Labels extends Vue {
-  tags = tagListModel.data; // 保证Labels页面的数据始终与 tagListModel.data 挂钩
+  tags = window.tagList // 保证Labels页面的数据始终与 tagListModel.data 挂钩
 
   create() {
     const name = window.prompt('请输入标签名');
-    if (name) {
-      const result = tagListModel.create(name);
-      if (result === 'duplicated') {
-        window.alert('重复了');
-      } else {
-        window.alert('创建成功');
-
-      }
+    if (name) {window.createTag(name)
     }
   }
 

@@ -19,15 +19,14 @@ import FormItem from '@/components/FormItem.vue';
 import Types from '@/components/Types.vue';
 import NumberPad from '@/components/NumberPad.vue';
 import {recordListModel} from '@/model/recordListModel.ts';
-import {tagListModel} from '@/model/tagListModel';
 
 // 拿到以后先本地创建一份数据，再放到类内部
 const  recordList = recordListModel.fetch();
-const tags=tagListModel.fetch()
+
 
 @Component({components: {NumberPad, Types, FormItem, Tags}})
 export default class Money extends Vue {
-  tags = tags;
+  tags = window.tagList; // 全局数据管理，写在main.ts中
   recordList=recordList
   record: MyRecord = {
     tags: [], type: '-', notes: '', amount: 0
