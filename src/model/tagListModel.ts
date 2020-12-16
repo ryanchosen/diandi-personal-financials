@@ -40,7 +40,7 @@ const tagListModel: TagListModel = {
     const index_IdList = idList.indexOf(id);
     this.data.splice(index_IdList,1)
     this.save();
-    return 'success'
+    return true
   }
 
 };

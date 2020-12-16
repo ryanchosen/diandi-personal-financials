@@ -18,21 +18,18 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import {tagListModel} from '@/model/tagListModel';
 import FormItem from '@/components/FormItem.vue';
 import Button from '@/components/Button.vue';
 
 
 @Component({components: {Button, FormItem}})
 export default class EditLabel extends Vue {
-  tag: Tag = {id: '', name: ''};
+  tag = window.findTag(this.$route.params.id) // 一进来先得到当前tag
 
   created() {
-    const id = this.$route.params.id;
-    const tags = window.tagList
-    this.tag = tags.filter(item => item.id === id)[0]; // 一进来先得到当前tag
     if (!this.tag) {
       this.$router.replace('/404');
+
     }
   }
 
@@ -41,8 +38,8 @@ export default class EditLabel extends Vue {
   }
 
   remove() {
-    const result=tagListModel.remove(this.tag.id);
-    if(result==='success'){
+    const result=window.removeTag(this.tag.id);
+    if(result){
       alert('删除成功')
       this.$router.back()
     }
@@ -54,7 +51,7 @@ export default class EditLabel extends Vue {
 // 查不到直接说'not found',
 // 查得到再判断一下名字是不是重复了
   onChangeValue(newTagName: string) {
-    const result = tagListModel.update(newTagName, this.tag.id);
+    const result = window.updateTag(newTagName,this.tag.id)
     if (result === 'duplicated') {
       window.alert('标签名重复了');
     } else {
