@@ -20,11 +20,12 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import FormItem from '@/components/FormItem.vue';
 import Button from '@/components/Button.vue';
+import {store} from '@/store/index2'
 
 
 @Component({components: {Button, FormItem}})
 export default class EditLabel extends Vue {
-  tag = window.findTag(this.$route.params.id) // 一进来先得到当前tag
+  tag = store.findTag(this.$route.params.id) // 一进来先得到当前tag
 
   created() {
     if (!this.tag) {
@@ -38,7 +39,7 @@ export default class EditLabel extends Vue {
   }
 
   remove() {
-    const result=window.removeTag(this.tag.id);
+    const result=store.removeTag(this.tag.id);
     if(result){
       alert('删除成功')
       this.$router.back()
@@ -51,7 +52,7 @@ export default class EditLabel extends Vue {
 // 查不到直接说'not found',
 // 查得到再判断一下名字是不是重复了
   onChangeValue(newTagName: string) {
-    const result = window.updateTag(newTagName,this.tag.id)
+    const result = store.updateTag(newTagName,this.tag.id)
     if (result === 'duplicated') {
       window.alert('标签名重复了');
     } else {

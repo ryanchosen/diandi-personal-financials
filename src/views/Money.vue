@@ -18,14 +18,14 @@ import Tags from '@/components/Tags.vue';
 import FormItem from '@/components/FormItem.vue';
 import Types from '@/components/Types.vue';
 import NumberPad from '@/components/NumberPad.vue';
-
+import {store} from '@/store/index2'
 
 
 
 @Component({components: {NumberPad, Types, FormItem, Tags}})
 export default class Money extends Vue {
-  tags = window.tagList; // 全局数据管理，写在main.ts中
-  recordList=window.recordList
+  tags = store.tagList; // 全局数据管理，写在main.ts中
+  recordList=store.recordList
   record: MyRecord = {
     tags: [], type: '-', notes: '', amount: 0
   };
@@ -43,7 +43,7 @@ export default class Money extends Vue {
   }
 
   createRecord() { // 把 newRecord 推到 recordList 里面
-    window.createRecord(this.record)
+    store.createRecord(this.record)
   }
 
 
