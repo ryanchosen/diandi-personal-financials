@@ -1,13 +1,15 @@
 <template>
   <div class="tags">
-
     <div class="new">
-      <button @click="createTag">新增标签</button>
+      <button @click="create">新增标签</button>
     </div>
     <ul class="current">
-      <li v-for="(tag,index) in dataSource" :key="index" @click="toggle(tag)" :class="selectedTags.indexOf(tag)!==-1&&'selected'">{{tag}}</li>
-
-
+      <li v-for="tag in dataSource"
+          :key="tag.id"
+          @click="toggle(tag.name)"
+          :class="{selected:selectedTags.indexOf(tag.name)!==-1}">
+        {{ tag.name }}
+      </li>
     </ul>
   </div>
 </template>
@@ -18,24 +20,27 @@ import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Tags extends Vue {
-  @Prop() dataSource: string[];
-  selectedTags: string[]=[];
-  toggle(tag){
-    if(this.selectedTags.indexOf(tag)===-1){
-      this.selectedTags.push(tag)
-    }else {
-      const index=this.selectedTags.indexOf(tag);
-      this.selectedTags.splice(index,1)
+  // dataSource的数据流向是Money.vue => Tags.vue => Money.vue
+  @Prop() readonly dataSource!: string[]; // 感叹号断言表示 外部数据dataSource不可能为null也不可能为undefined
+  selectedTags: string[] = []; // selectedTags的数据流向是 Tags.vue => Money.vue
+
+  toggle(tag: string) {
+    if (this.selectedTags.indexOf(tag) === -1) {
+      console.log((1))
+      this.selectedTags.push(tag);
+    } else {
+      const index = this.selectedTags.indexOf(tag);
+      this.selectedTags.splice(index, 1);
     }
-    this.$emit('update:value',this.selectedTags)
+    this.$emit('update:selectedTags', this.selectedTags); // 告诉 Money 用户选中了哪些tags
   }
-  createTag(){
-    const tagName=window.prompt('请输入标签名')
-    console.log(tagName)
-    if(tagName===' '){
-      window.alert('标签名不能为空')
-    }else{
-      this.$emit('update:dataSource',[...this.dataSource,tagName])
+
+  create() {
+    const newTagName = window.prompt('请输入标签名');
+    if (newTagName === ' ') {
+      window.alert('标签名不能为空');
+    } else {
+      this.$emit('update:dataSource', [...this.dataSource, newTagName]);
     }
   }
 }
@@ -55,7 +60,7 @@ export default class Tags extends Vue {
     overflow: auto;
 
     > li {
-      $bg:#d9d9d9;
+      $bg: #d9d9d9;
       background: $bg;
       $height: 24px;
       height: $height;
@@ -63,8 +68,9 @@ export default class Tags extends Vue {
       border-radius: 12px;
       padding: 0 16px;
       margin-right: 12px;
-      &.selected{
-        background: darken($bg,50%);
+
+      &.selected {
+        background: darken($bg, 50%);
         color: white;
       }
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="numberPad">
-    <div class="output">{{ output }}</div>
-    <div class="buttons" @click="inputContent">
+    <div class="output">{{ localAmount }}</div>
+    <div class="buttons" @click="onClick">
       <button>1</button>
       <button>2</button>
       <button>3</button>
@@ -22,40 +22,48 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Prop} from 'vue-property-decorator';
+import {Component} from 'vue-property-decorator';
 
 @Component
 export default class NumberPad extends Vue {
-  @Prop() amount: number
-  output = this.amount.toString();
-  str='0123456789.';
-  remove(){
-    const currentOutput=this.output;
-    this.output=currentOutput.substring(0,currentOutput.length-1);
+  localAmount = '0';
+  numberDotStr = '0123456789.';
+
+  remove() {
+    this.localAmount = this.localAmount.substring(0, this.localAmount.length - 1);
   }
-  clear(){
-    this.output='0';
+
+  clear() {
+    this.localAmount = '0';
   }
-  ok(){
-    this.$emit('update:amount',parseFloat(this.output))
+
+  ok() {
+    const amount=parseFloat(this.localAmount);
+    if(amount!==0){
+      this.$emit('update:amount', parseFloat(this.localAmount));
+      this.$emit('submit')
+    }
+    this.localAmount = '0';
   }
-  inputContent(e: MouseEvent) {
-    const inputContent=e.target.innerText;
-    const output=this.output;
-    if(this.str.indexOf(inputContent)===-1){return}
-    if(output.length===16){return}
-    if(output==='0'){
-      if(inputContent==='.'){
-        this.output+=inputContent;
-      }else{
-        this.output=inputContent
+
+  onClick(e: MouseEvent) {
+    const button = e.target as HTMLButtonElement; // 强制告诉typescript e.target是一个button元素，为了解决ts的报错，
+    const inputContent = button.innerText;
+    const output = this.localAmount;
+    if (this.numberDotStr.indexOf(inputContent) === -1) {return;}
+    if (output.length === 16) {return;}
+    if (output === '0') {
+      if (inputContent === '.') {
+        this.localAmount += inputContent;
+      } else {
+        this.localAmount = inputContent;
       }
-    }else{
-      if([...output.matchAll(/\./g)].length===0){
-          this.output+=inputContent;
-      }else if([...output.matchAll(/\./g)].length===1){
-        if(inputContent!=='.'){
-          this.output+=inputContent;
+    } else {
+      if ([...output.matchAll(/\./g)].length === 0) {
+        this.localAmount += inputContent;
+      } else if ([...output.matchAll(/\./g)].length === 1) {
+        if (inputContent !== '.') {
+          this.localAmount += inputContent;
         }
       }
     }

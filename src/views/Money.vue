@@ -1,41 +1,59 @@
 <template>
   <Layout class-prefix="layout">
-    {{ record }}
-    <Tags :data-source.sync="tags" @update:value="onUpdateSelectedTags"/>
-    <Notes :note.sync="record.notes" />
+    {{ recordList }}
+    <!--    只有` 类型` 和 `所有标签` 才有必要让数据流是从Money.vue ===> 局部组件-->
+    <Tags :data-source.sync="tags" @update:selectedTags="onUpdateSelectedTags"/>
+    <FormItem @update:value="onUpdateValue" field-name="备注" placeholder="请在此输入备注"/>
     <Types :type.sync="record.type"/>
-    <NumberPad :amount.sync="record.amount"/>
+    <NumberPad @update:amount="onUpdateAmount" @submit="saveRecord"/>
+
+
   </Layout>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Watch} from 'vue-property-decorator';
 import Tags from '@/components/Tags.vue';
-import Notes from '@/components/Notes.vue';
+import FormItem from '@/components/FormItem.vue';
 import Types from '@/components/Types.vue';
 import NumberPad from '@/components/NumberPad.vue';
+import {recordListModel} from '@/model/recordListModel.ts';
+import {tagListModel} from '@/model/tagListModel';
 
-// 声明一个类型
-type Record = {
-  tags: string[];
-  notes: string;
-  type: string;
-  amount: number ;
-}
-@Component({components: {NumberPad, Types, Notes, Tags}})
+// 拿到以后先本地创建一份数据，再放到类内部
+const  recordList = recordListModel.fetch();
+const tags=tagListModel.fetch()
+
+@Component({components: {NumberPad, Types, FormItem, Tags}})
 export default class Money extends Vue {
-  tags = ['衣', '食', '住', '行'];
-  record: Record = {
-    tags: [], notes: '', type: '-', amount: 0
+  tags = tags;
+  recordList=recordList
+  record: MyRecord = {
+    tags: [], type: '-', notes: '', amount: 0
   };
 
-  onUpdateSelectedTags(value) {
+  onUpdateSelectedTags(value: string []) {
     this.record.tags = value;
   }
 
-  onUpdateNotes(value) {
+  onUpdateValue(value: string) {
     this.record.notes = value;
+  }
+
+  onUpdateAmount(value: number) {
+    this.record.amount = value;
+  }
+
+  saveRecord() { // 把 newRecord 推到 recordList 里面
+    const clone = recordListModel.clone(this.record) // 克隆是为了避免record地址共用
+    this.recordList.push(clone);
+  }
+
+  // 只要 recordList 一有更新就保存到数据库
+  @Watch('recordList')
+  onRecordList() {
+    recordListModel.save(this.recordList)
   }
 }
 </script>

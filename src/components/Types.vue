@@ -13,12 +13,11 @@ import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Types extends Vue {
-  @Prop({default:'-'}) type: string; //  减号支出，加号收入
+
+
+  @Prop({default: '-'}) type!: string; //  减号支出，加号收入
   selectType(type: string) {
-    if (type !== '-' && type !== '+') {
-      throw new Error('type is unknown'); // 健壮性
-    }
-    this.$emit('update:type',type)
+    this.$emit('update:type', type);
   }
 
 }
