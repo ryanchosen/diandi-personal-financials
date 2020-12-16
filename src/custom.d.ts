@@ -6,6 +6,10 @@ type MyRecord = {
   amount?: number;
   createdAt?: Date
 }
+type Tag = {
+  id: string,
+  name: string
+}
 type TagListModel = {
   data: Tag[],  // [{id:'',name:''},{id:'',name:''}]
   fetch: () => Tag[],
@@ -14,10 +18,7 @@ type TagListModel = {
   create: (name: string) => 'success' | 'duplicated' // 联合类型 说明了 只能返回这两种结果 有助于解决拼写问题
   remove: (id: string) => boolean
 }
-type Tag = {
-  id: string,
-  name: string
-}
+
 
 interface Window {  // window.tagList = tagListModel.fetch() 不报错
   tagList: Tag[]
@@ -25,4 +26,7 @@ interface Window {  // window.tagList = tagListModel.fetch() 不报错
   removeTag:(id:string)=>boolean
   updateTag:(id:string,name:string)=>'success' | 'duplicated' | 'not found'
   findTag:(id:string)=>Tag
+
+  recordList:MyRecord[]
+  createRecord:(record:MyRecord)=>void
 }

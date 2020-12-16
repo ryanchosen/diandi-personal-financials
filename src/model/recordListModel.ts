@@ -14,6 +14,7 @@ const recordListModel = {
     const cloneItem = clone(record) // 克隆是为了避免record地址共用
     cloneItem.createAt=new Date();
     this.data.push(cloneItem);
+    this.save()
   }
 
 };

@@ -5,7 +5,7 @@
     <Tags :data-source.sync="tags" @update:selectedTags="onUpdateSelectedTags"/>
     <FormItem @update:value="onUpdateValue" field-name="备注" placeholder="请在此输入备注"/>
     <Types :type.sync="record.type"/>
-    <NumberPad @update:amount="onUpdateAmount" @submit="saveRecord"/>
+    <NumberPad @update:amount="onUpdateAmount" @submit="createRecord"/>
 
 
   </Layout>
@@ -13,21 +13,19 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component, Watch} from 'vue-property-decorator';
+import {Component} from 'vue-property-decorator';
 import Tags from '@/components/Tags.vue';
 import FormItem from '@/components/FormItem.vue';
 import Types from '@/components/Types.vue';
 import NumberPad from '@/components/NumberPad.vue';
-import {recordListModel} from '@/model/recordListModel.ts';
 
-// 拿到以后先本地创建一份数据，再放到类内部
-const  recordList = recordListModel.fetch();
+
 
 
 @Component({components: {NumberPad, Types, FormItem, Tags}})
 export default class Money extends Vue {
   tags = window.tagList; // 全局数据管理，写在main.ts中
-  recordList=recordList
+  recordList=window.recordList
   record: MyRecord = {
     tags: [], type: '-', notes: '', amount: 0
   };
@@ -44,15 +42,11 @@ export default class Money extends Vue {
     this.record.amount = value;
   }
 
-  saveRecord() { // 把 newRecord 推到 recordList 里面
-    recordListModel.create(this.record)
+  createRecord() { // 把 newRecord 推到 recordList 里面
+    window.createRecord(this.record)
   }
 
-  // 只要 recordList 一有更新就保存到数据库
-  @Watch('recordList')
-  onRecordList() {
-    recordListModel.save()
-  }
+
 }
 </script>
 <style lang="scss">
