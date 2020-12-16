@@ -29,7 +29,7 @@ export default class EditLabel extends Vue {
 
   created() {
     const id = this.$route.params.id;
-    const tags = tagListModel.fetch();
+    const tags = tagListModel.data
     this.tag = tags.filter(item => item.id === id)[0]; // 一进来先得到当前tag
     if (!this.tag) {
       this.$router.replace('/404');

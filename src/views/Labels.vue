@@ -27,7 +27,7 @@ import Button from '@/components/Button.vue';
   components: {Button}
 })
 export default class Labels extends Vue {
-  tags = tagListModel.fetch(); // 保证Labels页面的数据始终与 tagListModel.data 挂钩
+  tags = tagListModel.data; // 保证Labels页面的数据始终与 tagListModel.data 挂钩
 
   create() {
     const name = window.prompt('请输入标签名');

@@ -46,14 +46,13 @@ export default class Money extends Vue {
   }
 
   saveRecord() { // 把 newRecord 推到 recordList 里面
-    const clone = recordListModel.clone(this.record) // 克隆是为了避免record地址共用
-    this.recordList.push(clone);
+    recordListModel.create(this.record)
   }
 
   // 只要 recordList 一有更新就保存到数据库
   @Watch('recordList')
   onRecordList() {
-    recordListModel.save(this.recordList)
+    recordListModel.save()
   }
 }
 </script>
