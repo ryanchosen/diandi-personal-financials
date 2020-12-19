@@ -1,7 +1,7 @@
 <template>
   <Layout>
-    <Tabs class-prefix="statistics-types" :data-source="typeArray" :value.sync="typeValue"/>
-    <Tabs class-prefix="statistics-DWM" :data-source="DWMArray" :value.sync="DWMValue"/>
+    <Tabs class-prefix="statistics-types" :data-source="recordTypeList" :value.sync="recordTypeValue"/>
+    <Tabs class-prefix="statistics-DWM" :data-source="dayWeekMonthList" :value.sync="dayWeekMonthValue"/>
   </Layout>
 </template>
 
@@ -10,20 +10,15 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Types from '@/components/Types.vue';
 import Tabs from '@/components/Tabs.vue';
+import dayWeekMonthList from '@/constants/dayWeekMonthList';
+import recordTypeList from '@/constants/recordTypeList'
 
 @Component({components: {Tabs, Types}})
 export default class Statistics extends Vue {
-  typeValue = '-'; // 给出初始值，并且能回收到更改后的值
-  typeArray = [
-    {text: '支出', value: '-'},
-    {text: '收入', value: '+'},
-  ];
-  DWMValue='D';
-  DWMArray = [
-    {text: '按天', value: 'D'},
-    {text: '按周', value: 'W'},
-    {text: '按月', value: 'M'}
-  ];
+  recordTypeValue = '-'; // 给出初始值，并且能回收到更改后的值
+  recordTypeList = recordTypeList;
+  dayWeekMonthValue='D';
+  dayWeekMonthList = dayWeekMonthList;
 }
 </script>
 

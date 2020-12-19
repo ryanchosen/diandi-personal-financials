@@ -1,10 +1,9 @@
 <template>
   <Layout class-prefix="layout">
     {{ recordList }}
-    <!--    只有` 类型` 和 `所有标签` 才有必要让数据流是从Money.vue ===> 局部组件-->
     <Tags  @update:selectedTags="onUpdateSelectedTags"/>
     <FormItem @update:value="onUpdateValue" field-name="备注" placeholder="请在此输入备注"/>
-    <Types :type.sync="record.type"/>
+    <Tabs  :data-source="recordTypeList" :value.sync="record.type"/>
     <NumberPad @update:amount="onUpdateAmount" @submit="createRecord"/>
   </Layout>
 </template>
@@ -16,10 +15,12 @@ import Tags from '@/components/Tags.vue';
 import FormItem from '@/components/FormItem.vue';
 import Types from '@/components/Types.vue';
 import NumberPad from '@/components/NumberPad.vue';
+import Tabs from '@/components/Tabs.vue';
+import recordTypeList from '@/constants/recordTypeList';
 
 
 @Component({
-  components: {NumberPad, Types, FormItem, Tags},
+  components: {Tabs, NumberPad, Types, FormItem, Tags},
   computed: {
     tags() {
       return this.$store.state.tagList;
@@ -31,6 +32,7 @@ import NumberPad from '@/components/NumberPad.vue';
   }
 })
 export default class Money extends Vue {
+  recordTypeList=recordTypeList
   created(){
     this.$store.commit('fetchTagList');
     this.$store.commit('fetchRecordList');
