@@ -8,12 +8,11 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
-import Types from '@/components/Types.vue';
 import Tabs from '@/components/Tabs.vue';
 import dayWeekMonthList from '@/constants/dayWeekMonthList';
 import recordTypeList from '@/constants/recordTypeList'
 
-@Component({components: {Tabs, Types}})
+@Component({components: {Tabs}})
 export default class Statistics extends Vue {
   recordTypeValue = '-'; // 给出初始值，并且能回收到更改后的值
   recordTypeList = recordTypeList;

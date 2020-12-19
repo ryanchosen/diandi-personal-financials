@@ -13,14 +13,13 @@ import Vue from 'vue';
 import {Component} from 'vue-property-decorator';
 import Tags from '@/components/Tags.vue';
 import FormItem from '@/components/FormItem.vue';
-import Types from '@/components/Types.vue';
 import NumberPad from '@/components/NumberPad.vue';
 import Tabs from '@/components/Tabs.vue';
 import recordTypeList from '@/constants/recordTypeList';
 
 
 @Component({
-  components: {Tabs, NumberPad, Types, FormItem, Tags},
+  components: {Tabs, NumberPad, FormItem, Tags},
   computed: {
     tags() {
       return this.$store.state.tagList;
