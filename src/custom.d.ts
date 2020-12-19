@@ -19,3 +19,7 @@ type TagListModel = {
   remove: (id: string) => boolean
 }
 
+type Tab={
+  text:string,
+  value:string
+}
