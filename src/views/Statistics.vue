@@ -21,23 +21,20 @@ export default class Statistics extends Vue {
 }
 </script>
 
-<style lang="scss">
-.statistics-types,.statistics-DWM {
-  &-tabs{
-    .selected{
-      background: white;
+<style lang="scss" scoped>
+::v-deep {
+  .statistics-types,.statistics-DWM {
+    &-tabs{
+      .selected{
+        background: white;
+      }
     }
   }
+  .statistics-types-tabs .selected::after{
+    display: none!important;
+  }
+  .statistics-DWM-tabs li{
+    line-height: 48px;
+  }
 }
-.statistics-types-tabs .selected::after{
-  display: none!important;
-}
-</style>
-<style lang="scss" scoped>
-// 这是一种父传子style的方式
-//::v-deep .types{
-//  > .selected{
-//    background:white;
-//  }
-//}
 </style>
