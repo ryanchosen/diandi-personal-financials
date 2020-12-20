@@ -1,8 +1,8 @@
 <template>
+
   <Layout class-prefix="layout">
-    {{ recordList }}
-    <Tags  @update:selectedTags="onUpdateSelectedTags"/>
-    <FormItem @update:value="onUpdateValue" field-name="备注" placeholder="请在此输入备注"/>
+    <Tags  :value="record.tags" @update:selectedTags="onUpdateSelectedTags"/>
+    <FormItem @update:value="onUpdateValue" :value="record.notes" field-name="备注" placeholder="请在此输入备注"/>
     <Tabs  :data-source="recordTypeList" :value.sync="record.type"/>
     <NumberPad @update:amount="onUpdateAmount" @submit="createRecord"/>
   </Layout>
@@ -35,7 +35,6 @@ export default class Money extends Vue {
   created(){
     this.$store.commit('fetchTagList');
     this.$store.commit('fetchRecordList');
-
   }
   record: MyRecord = {
     tags: [], type: '-', notes: '', amount: 0
@@ -54,7 +53,13 @@ export default class Money extends Vue {
   }
 
   createRecord() { // 把 newRecord 推到 recordList 里面
-    this.$store.commit('createRecord', this.record);
+    if(!this.record.tags||this.record.tags.length===0){
+      window.alert('请至少选择一个标签')
+    }else{
+      this.$store.commit('createRecord', this.record);
+      this.record.notes=' ';
+      this.record.tags=[];
+    }
   }
 
 
@@ -62,7 +67,6 @@ export default class Money extends Vue {
 </script>
 <style lang="scss">
 .layout-content {
-  border: 1px solid red;
   display: flex;
   flex-direction: column;
 }

@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <Tabs class-prefix="statistics-types" :data-source="recordTypeList" :value.sync="recordTypeValue"/>
-    <ol>
+    <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList" :key="index">
         <h3 class="title">{{ dayJS(group.title) }} <span>￥ {{group.total}}</span></h3>
         <ol>
@@ -10,6 +10,7 @@
         </ol>
       </li>
     </ol>
+    <div v-else class="noResult">目前没有{{recordTypeValue==='-'?'支出':'收入'}}记录</div>
   </Layout>
 </template>
 
@@ -29,8 +30,8 @@ import {clone} from '@/lib/clone';
     },
     groupedList() { // 点选’支出‘/’收入‘时，会更改本地的recordTypeValue，一旦有更改，这里的计算属性就会重新计算。
       const {recordList} = this;
-      console.log(recordList.map(item=>item.createAt));
       const newRecordList=clone(recordList).filter(r=>r.type===this.recordTypeValue).sort((a, b)=>dayjs(b.createAt).valueOf()-dayjs(a.createAt).valueOf()); // 对旧的list做了一个排序
+      if(newRecordList.length===0){return[];}
       const result=[{title:dayjs(newRecordList[0].createAt).format('YYYY-MM-DD'),items:[newRecordList[0]]}];
       for(let i=1;i<newRecordList.length;i++){
         const current=newRecordList[i];
@@ -71,7 +72,7 @@ export default class Statistics extends Vue {
   }
 
   tagString(tags) {
-    return tags.length === 0 ? 'No Tags' : tags.join(',');
+    return tags.length === 0 ? 'No Tags' : tags.join(', ');
   }
 
   recordTypeValue = '-'; // 给出初始值，并且能回收到更改后的值
@@ -123,5 +124,9 @@ export default class Statistics extends Vue {
     overflow: hidden;
   }
 
+}
+.noResult{
+  padding: 30px;
+  text-align: center;
 }
 </style>

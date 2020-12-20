@@ -12,7 +12,8 @@ const store = new Vuex.Store({
   state: {
     recordList: [] as MyRecord[],
     tagList: [] as Tag[],
-    currentTag:{}
+    currentTag: {},
+    createTagAlert: true
   },
   mutations: {
     fetchRecordList(state) {
@@ -23,15 +24,24 @@ const store = new Vuex.Store({
       cloneItem.createAt = new Date();
       state.recordList.push(cloneItem);
       store.commit('saveRecordList');
+      window.alert('已保存');
     },
     saveRecordList(state) {
       window.localStorage.setItem(RecordList, JSON.stringify(state.recordList));
     },
     fetchTagList(state) {
-       state.tagList = JSON.parse(window.localStorage.getItem(TagList) || '[]');
+      state.tagList = JSON.parse(window.localStorage.getItem(TagList) || '[]');
+      if (!state.tagList || state.tagList.length === 0) {
+        state.createTagAlert = false;
+        store.commit('createTag', '购物');
+        store.commit('createTag', '餐饮');
+        store.commit('createTag', '交通');
+        store.commit('createTag', '旅行');
+        state.createTagAlert = true;
+      }
     },
-    fetchCurrentTag(state, id:string){
-      state.currentTag=state.tagList.filter(tag => tag.id === id)[0];
+    fetchCurrentTag(state, id: string) {
+      state.currentTag = state.tagList.filter(tag => tag.id === id)[0];
     },
     createTag(state, name: string) {
       const nameList = state.tagList.map(item => item.name);
@@ -45,18 +55,18 @@ const store = new Vuex.Store({
       tag.id = id.toString();
       state.tagList.push(tag);
       store.commit('saveTagList');
-      window.alert('创建成功');
+      state.createTagAlert && window.alert('创建成功');
       return;
     },
-    removeTag(state,id:string){
+    removeTag(state, id: string) {
       const idList = state.tagList.map(item => item.id);
       const index_IdList = idList.indexOf(id);
-      state.tagList.splice(index_IdList,1)
-      store.commit('saveTagList')
+      state.tagList.splice(index_IdList, 1);
+      store.commit('saveTagList');
       alert('删除成功');
     },
-    updateTag(state, tag:Tag) {
-      const {id,name}=tag;
+    updateTag(state, tag: Tag) {
+      const {id, name} = tag;
       const idList = state.tagList.map(item => item.id);
       const nameList = state.tagList.map(item => item.name);
       const index_IdList = idList.indexOf(id);

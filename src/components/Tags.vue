@@ -1,13 +1,13 @@
 <template>
   <div class="tags">
     <div class="new">
-      <button @click="createTag">新增标签</button>
+      <button @click="createTag">创建标签</button>
     </div>
     <ul class="current">
       <li v-for="tag in tagList"
           :key="tag.id"
           @click="toggle(tag.name)"
-          :class="{selected:selectedTags.indexOf(tag.name)!==-1}">
+          :class="{selected:value.indexOf(tag.name)!==-1}">
         {{ tag.name }}
       </li>
     </ul>
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import {Component} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 import { mixins } from 'vue-class-component'
 import TagHelper from '@/mixins/TagHelper.ts';
 
@@ -29,21 +29,19 @@ import TagHelper from '@/mixins/TagHelper.ts';
     }
 )
 export default class Tags extends  mixins(TagHelper) {
+  @Prop() value;
   created() {
     this.$store.commit('fetchTagList');
   }
-
-  selectedTags: string[] = []; // selectedTags的数据流向是 Tags.vue => Money.vue
-
   toggle(tag: string) {
-    if (this.selectedTags.indexOf(tag) === -1) {
+    if (this.value.indexOf(tag) === -1) {
       console.log((1));
-      this.selectedTags.push(tag);
+      this.value.push(tag);
     } else {
-      const index = this.selectedTags.indexOf(tag);
-      this.selectedTags.splice(index, 1);
+      const index = this.value.indexOf(tag);
+      this.value.splice(index, 1);
     }
-    this.$emit('update:selectedTags', this.selectedTags); // 告诉 Money 用户选中了哪些tags
+    this.$emit('update:selectedTags', this.value); // 告诉 Money 用户选中了哪些tags
   }
 
 }
@@ -71,6 +69,7 @@ export default class Tags extends  mixins(TagHelper) {
       border-radius: 12px;
       padding: 0 16px;
       margin-right: 12px;
+      margin-bottom: 5px;
 
       &.selected {
         background: darken($bg, 50%);

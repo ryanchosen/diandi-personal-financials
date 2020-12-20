@@ -43,7 +43,6 @@ export default class NumberPad extends Vue {
       this.$emit('update:amount', parseFloat(this.localAmount));
       this.$emit('submit')
     }
-    this.localAmount = '0';
   }
 
   onClick(e: MouseEvent) {
@@ -92,6 +91,7 @@ export default class NumberPad extends Vue {
       height: 64px;
       float: left;
       font-size: 18px;
+      border-radius: 5px;
 
       &.ok {
         height: 64*2px;
