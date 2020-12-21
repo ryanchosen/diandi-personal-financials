@@ -69,12 +69,12 @@ const store = new Vuex.Store({
       const {id, name} = tag;
       const idList = state.tagList.map(item => item.id);
       const nameList = state.tagList.map(item => item.name);
-      const index_IdList = idList.indexOf(id);
+      const indexIdList = idList.indexOf(id);
       if (idList.indexOf(id) === -1) {return 'not found';}
       if (nameList.indexOf(name) >= 0) {
         window.alert('标签名重复了');
       } else {
-        state.tagList[index_IdList].name = name;
+        state.tagList[indexIdList].name = name;
         store.commit('saveTagList');
         window.alert('更新成功');
       }
