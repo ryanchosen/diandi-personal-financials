@@ -44,7 +44,7 @@ import {clone} from '@/lib/clone';
         }
       }
       result.map(group=>{      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        group.total=group.items.reduce((sum,item)=>sum+item.amount,0).toFixed(2);
+        group.total=group.items.reduce((sum,item)=>sum+item.amount,0).toFixed(1);
       })
       return result
     }
