@@ -24,16 +24,15 @@ import Button from '@/components/Button.vue';
 
 @Component({
   components: {Button, FormItem},
-  computed: {
-    tag() {
-      return this.$store.state.currentTag;
-    }
-  }
 })
 export default class EditLabel extends Vue {
+  get tag() {
+    return this.$store.state.currentTag;
+  }
   created() {
     this.$store.commit('fetchTagList');
     this.$store.commit('fetchCurrentTag', this.$route.params.id);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     if (!this.tag) {
       this.$router.replace('/404');
     }
@@ -44,17 +43,13 @@ export default class EditLabel extends Vue {
   }
 
   remove() {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     this.$store.commit('removeTag', this.tag.id);
     this.$router.back();
   }
 
-// 不要把对象扔过去，而是把字面量扔过去
-// 通过id去查在数组中排第几，
-// id不等于数组中的排名，
-// 然后如果可以查到id再判断，
-// 查不到直接说'not found',
-// 查得到再判断一下名字是不是重复了
   onChangeValue(newTagName: string) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     this.$store.commit('updateTag', {name: newTagName, id: this.tag.id});
   }
 }

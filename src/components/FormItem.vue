@@ -13,9 +13,9 @@ import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class FormItem extends Vue {
-  @Prop({required: true}) fieldName: string;
-  @Prop({default: '请在此输入'}) placeholder: string;
-  @Prop({default: ''}) readonly value: string;
+  @Prop({required: true}) fieldName!: string;
+  @Prop({default: '请在此输入'}) placeholder!: string;
+  @Prop({default: ''}) readonly value!: string;
 
   onInput(event: InputEvent) {
     const ET = event.target as HTMLInputElement;

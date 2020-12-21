@@ -1,6 +1,6 @@
 <template>
   <div class="numberPad">
-    <div class="output">{{ localAmount }}</div>
+    <div class="output">{{ value }}</div>
     <div class="buttons" @click="onClick">
       <button>1</button>
       <button>2</button>
@@ -22,26 +22,30 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class NumberPad extends Vue {
-  localAmount = '0';
+  @Prop(String) value: string;
+  localAmount = this.value;
   numberDotStr = '0123456789.';
 
   remove() {
-    this.localAmount = this.localAmount.substring(0, this.localAmount.length - 1);
+    (this.localAmount.length !== 1) && (this.localAmount = this.localAmount.substring(0, this.localAmount.length - 1));
+    this.$emit('update:amount', this.localAmount);
   }
 
   clear() {
     this.localAmount = '0';
+    this.$emit('update:amount', this.localAmount);
   }
 
   ok() {
-    const amount=parseFloat(this.localAmount);
-    if(amount!==0){
-      this.$emit('update:amount', parseFloat(this.localAmount));
-      this.$emit('submit')
+    const amount = parseFloat(this.localAmount);
+    if (amount !== 0) {
+      this.$emit('update:amount', this.localAmount);
+      this.$emit('submit');
+      this.clear();
     }
   }
 
@@ -66,6 +70,7 @@ export default class NumberPad extends Vue {
         }
       }
     }
+    this.$emit('update:amount', this.localAmount);
   }
 }
 </script>

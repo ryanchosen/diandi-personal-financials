@@ -3,7 +3,7 @@ type MyRecord = {
   tags: string[];
   notes?: string;
   type: string;
-  amount?: number;
+  amount?: number | string;
   createAt?: string
 }
 type Tag = {
@@ -19,7 +19,7 @@ type TagListModel = {
   remove: (id: string) => boolean
 }
 
-type Tab={
-  text:string,
-  value:string
+type Tab = {
+  text: string,
+  value: string
 }

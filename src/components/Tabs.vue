@@ -17,12 +17,9 @@ import {Component, Prop} from 'vue-property-decorator';
 
 @Component
 export default class Tabs extends Vue {
-  @Prop({required: true, type: Array})
-  dataSource: Tab[];
-  @Prop(String)
-  readonly value: string;
-  @Prop(String)
-  classPrefix?: string;
+  @Prop({required: true, type: Array}) dataSource!: Tab[];
+  @Prop(String) readonly value!: string;
+  @Prop(String) classPrefix?: string;
 
   onClick(value: string) {
     this.$emit('update:value', value);

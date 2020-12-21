@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import {Component, Prop} from 'vue-property-decorator';
-import { mixins } from 'vue-class-component'
+import {mixins} from 'vue-class-component';
 import TagHelper from '@/mixins/TagHelper.ts';
 
 @Component(
@@ -28,12 +28,14 @@ import TagHelper from '@/mixins/TagHelper.ts';
       }
     }
 )
-export default class Tags extends  mixins(TagHelper) {
-  @Prop() value;
+export default class Tags extends mixins(TagHelper) {
+  @Prop() value!: Tag[];
+
   created() {
     this.$store.commit('fetchTagList');
   }
-  toggle(tag: string) {
+
+  toggle(tag: Tag) {
     if (this.value.indexOf(tag) === -1) {
       console.log((1));
       this.value.push(tag);
