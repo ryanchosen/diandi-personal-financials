@@ -27,3 +27,15 @@ window.onload=function (){
     window.scrollTo(0,10000);
   },0)
 }
+
+if(document.documentElement.clientWidth>500){
+  alert('手机记账更方便，扫一扫下面的二维码');
+  const img=document.createElement('img');
+  img.src='./img/qrcode.png'
+  img.style.position='fixed'
+  img.style.left='50%'
+  img.style.top='50%';
+  img.style.transform='translate(-50%,-50%)';
+  img.style.boxShadow='0 0 10px rgba(0,0,0,0.25)';
+  document.body.appendChild(img);
+}

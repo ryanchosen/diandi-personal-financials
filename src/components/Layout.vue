@@ -1,5 +1,5 @@
 <template>
-  <div class="layout-wrapper" :class="classPrefix&& `${classPrefix}-wrapper`">
+  <div class="layout-wrapper" :class="classPrefix&& `${classPrefix}-wrapper`" >
     <div class="content" :class="classPrefix&& `${classPrefix}-content`">
       <slot></slot>
     </div>

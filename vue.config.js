@@ -17,5 +17,11 @@ module.exports = {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     config.plugin('svg-sprite').use(require('svg-sprite-loader/plugin'), [{plainSprite: true}])
     config.module.rule('svg').exclude.add(dir) // 其他 svg loader 排除 icons 目录
-  }
+  },
+  // configureWebpack: config => {
+  //   config.plugins.forEach((val) => {
+  //       val.options.title = '点滴记账本'
+  //   })
+  // }
+
 }

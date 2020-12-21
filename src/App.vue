@@ -1,8 +1,20 @@
 <template>
-  <div id="app">
+  <div id="app" v-title data-title="点滴记账本">
   <router-view></router-view>
   </div>
 </template>
+<script>
+export default {
+  name: "App",
+  directives: {
+    title: {
+      inserted(el, info) {
+       document.title=el.dataset.title
+      }
+    },
+  },
+};
+</script>
 <style lang="scss">
 @import '~@/assets/styles/reset.scss';
 @import "~@/assets/styles/helper.scss";

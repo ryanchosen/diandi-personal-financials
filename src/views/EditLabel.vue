@@ -43,13 +43,11 @@ export default class EditLabel extends Vue {
   }
 
   remove() {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     this.$store.commit('removeTag', this.tag.id);
     this.$router.back();
   }
 
   onChangeValue(newTagName: string) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     this.$store.commit('updateTag', {name: newTagName, id: this.tag.id});
   }
 }
