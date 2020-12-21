@@ -50,7 +50,7 @@ const store = new Vuex.Store({
         return;
       }
       const id = createId();
-      let tag: Tag = {id: '', name: ''};
+      const tag: Tag = {id: '', name: ''};
       tag.name = name;
       tag.id = id.toString();
       state.tagList.push(tag);
@@ -60,8 +60,8 @@ const store = new Vuex.Store({
     },
     removeTag(state, id: string) {
       const idList = state.tagList.map(item => item.id);
-      const index_IdList = idList.indexOf(id);
-      state.tagList.splice(index_IdList, 1);
+      const indexIdList = idList.indexOf(id);
+      state.tagList.splice(indexIdList, 1);
       store.commit('saveTagList');
       alert('删除成功');
     },
