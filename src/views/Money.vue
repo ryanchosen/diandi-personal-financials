@@ -1,7 +1,6 @@
 <template>
 
   <Layout class-prefix="layout">
-    {{record.createdAt}}
     <Tags :value="record.tags" @update:selectedTags="onUpdateSelectedTags"/>
     <FormItem @update:value="onUpdateValue" :value="record.notes" field-name="备注" placeholder="请在此输入备注"/>
     <FormItem @update:value="onUpdateValue" :value="record.createdAt" field-name="日期" placeholder="请在此输入日期" type="date"/>
@@ -48,8 +47,12 @@ export default class Money extends Vue {
     this.record.tags = value;
   }
 
-  onUpdateValue(value: string) {
-    this.record.notes = value;
+  onUpdateValue(obj: {}) {
+    if(obj.type==='date'){
+      this.record.createdAt = obj.value;
+    }else{
+      this.record.notes = obj.value;
+    }
   }
 
   onUpdateAmount(value: string) {

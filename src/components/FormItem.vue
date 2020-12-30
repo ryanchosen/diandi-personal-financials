@@ -27,14 +27,16 @@ export default class FormItem extends Vue {
 
   onInput(event: InputEvent) {
     const ET = event.target as HTMLInputElement;
-    this.$emit('update:value', ET.value);
+    console.log(ET.value);
+    this.$emit('update:value', {value: ET.value, type: this.type||'text'});
   }
 
   onChange(event) {
     this.$emit('changeValue', event.target.value);
   }
-  x(isoString){
-    return dayjs(isoString).format('YYYY-MM-DD');
+
+  x(isoString) {
+    return dayjs(isoString).format('YYYY-MM-DD'); // 格式化，将多余的时分秒信息删除
   }
 }
 </script>
