@@ -31,16 +31,16 @@ import {clone} from '@/lib/clone';
     groupedList() { // 点选’支出‘/’收入‘时，会更改本地的recordTypeValue，一旦有更改，这里的计算属性就会重新计算。
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       const {recordList} = this;
-      const newRecordList=clone(recordList).filter(r=>r.type===this.recordTypeValue).sort((a, b)=>dayjs(b.createAt).valueOf()-dayjs(a.createAt).valueOf()); // 对旧的list做了一个排序
+      const newRecordList=clone(recordList).filter(r=>r.type===this.recordTypeValue).sort((a, b)=>dayjs(b.createdAt).valueOf()-dayjs(a.createdAt).valueOf()); // 对旧的list做了一个排序
       if(newRecordList.length===0){return[];}
-      const result=[{title:dayjs(newRecordList[0].createAt).format('YYYY-MM-DD'),items:[newRecordList[0]],total:0}];
+      const result=[{title:dayjs(newRecordList[0].createdAt).format('YYYY-MM-DD'),items:[newRecordList[0]],total:0}];
       for(let i=1;i<newRecordList.length;i++){
         const current=newRecordList[i];
         const last=result[result.length-1];
-        if(dayjs(last.title).isSame(dayjs(current.createAt),'day')){
+        if(dayjs(last.title).isSame(dayjs(current.createdAt),'day')){
           last.items.push(current);
         }else{
-          result.push({title: dayjs(current.createAt).format('YYYY-MM-DD'),items: [current],total:0});
+          result.push({title: dayjs(current.createdAt).format('YYYY-MM-DD'),items: [current],total:0});
         }
       }
       result.map(group=>{      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore

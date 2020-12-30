@@ -4,7 +4,7 @@ type MyRecord = {
   notes?: string;
   type: string;
   amount?: number | string;
-  createAt?: string
+  createdAt?: string
 }
 type Tag = {
   id: string,

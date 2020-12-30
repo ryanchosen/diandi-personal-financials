@@ -3,7 +3,12 @@
     <label class="notes">
       <Icon name="comments"/>
       <span class="name">{{ this.fieldName }}</span>
-      <input type="text" :placeholder="placeholder" :value="value" @input="onInput" @change="onChange">
+      <template v-if="type==='date'">
+        <input :type="type" :placeholder="placeholder" :value="x(value)" @input="onInput" @change="onChange">
+      </template>
+      <template v-else>
+        <input type="text" :placeholder="placeholder" :value="value" @input="onInput" @change="onChange">
+      </template>
     </label>
   </div>
 </template>
@@ -11,19 +16,25 @@
 <script lang="ts">
 import Vue from 'vue';
 import {Component, Prop} from 'vue-property-decorator';
+import dayjs from 'dayjs';
 
 @Component
 export default class FormItem extends Vue {
   @Prop({required: true}) fieldName!: string;
   @Prop({default: '请在此输入'}) placeholder!: string;
   @Prop({default: ''}) readonly value!: string;
+  @Prop() type?: string;
 
   onInput(event: InputEvent) {
     const ET = event.target as HTMLInputElement;
     this.$emit('update:value', ET.value);
   }
+
   onChange(event) {
     this.$emit('changeValue', event.target.value);
+  }
+  x(isoString){
+    return dayjs(isoString).format('YYYY-MM-DD');
   }
 }
 </script>

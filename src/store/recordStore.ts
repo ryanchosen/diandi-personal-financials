@@ -10,7 +10,7 @@ const recordStore={
   recordList: data, // 返回一份data
   createRecord(record:MyRecord){
     const cloneItem = clone(record) // 克隆是为了避免record地址共用
-    cloneItem.createAt=new Date();
+    // cloneItem.createdAt=new Date();
     data.push(cloneItem);
     this.saveRecordList()
   },
