@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-title data-title="点滴记账本111">
+  <div id="app" v-title data-title="点滴记账本">
   <router-view></router-view>
   </div>
 </template>
