@@ -1,6 +1,7 @@
 <template>
   <div>
     <label class="notes">
+      <Icon name="comments"/>
       <span class="name">{{ this.fieldName }}</span>
       <input type="text" :placeholder="placeholder" :value="value" @input="onInput" @change="onChange">
     </label>

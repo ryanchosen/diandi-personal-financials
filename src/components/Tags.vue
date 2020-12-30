@@ -8,7 +8,7 @@
           :key="tag.id"
           @click="toggle(tag.name)"
           :class="{selected:value.indexOf(tag.name)!==-1}">
-        {{ tag.name }}
+       <span>{{ tag.name }}</span>
       </li>
     </ul>
   </div>
@@ -29,18 +29,17 @@ import TagHelper from '@/mixins/TagHelper.ts';
     }
 )
 export default class Tags extends mixins(TagHelper) {
-  @Prop() value!: Tag[];
+  @Prop() value!: string[];
 
   created() {
     this.$store.commit('fetchTagList');
   }
 
-  toggle(tag: Tag) {
-    if (this.value.indexOf(tag) === -1) {
-      console.log((1));
-      this.value.push(tag);
+  toggle(name: string) {
+    if (this.value.indexOf(name) === -1) {
+      this.value.push(name);
     } else {
-      const index = this.value.indexOf(tag);
+      const index = this.value.indexOf(name);
       this.value.splice(index, 1);
     }
     this.$emit('update:selectedTags', this.value); // 告诉 Money 用户选中了哪些tags
