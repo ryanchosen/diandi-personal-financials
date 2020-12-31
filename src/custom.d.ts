@@ -23,3 +23,5 @@ type Tab = {
   text: string,
   value: string
 }
+
+type updateValueObj = { type: string, value: string }
