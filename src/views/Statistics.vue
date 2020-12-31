@@ -28,7 +28,7 @@ import dayjs from 'dayjs';
 import {clone} from '@/lib/clone';
 
 @Component({
-  components: {Tabs, ECharts, Chart},
+  components: {Tabs, Chart},
   computed: {
     recordList() {
       return this.$store.state.recordList;
