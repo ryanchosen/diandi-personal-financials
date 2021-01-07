@@ -36,7 +36,7 @@ const store = new Vuex.Store({
         store.commit('createTag', '购物');
         store.commit('createTag', '餐饮');
         store.commit('createTag', '交通');
-        store.commit('createTag', '旅行');
+        store.commit('createTag', '工资');
         state.createTagAlert = true;
       }
     },

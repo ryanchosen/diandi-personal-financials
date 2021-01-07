@@ -1,6 +1,10 @@
 <template>
   <Layout>
     <Tabs class-prefix="statistics-types" :data-source="recordTypeList" :value.sync="recordTypeValue"/>
+    <div class="chartTitle">
+      <span>30天内总计{{`${recordTypeValue==='-'?'开销':'收到'}`}}</span>
+      <p>{{`${totalOf30days}`}} 元</p>
+    </div>
     <div class="echart-wrapper" ref="echartWrapper">
       <Chart :options="chartOptions" class="echart" :loading="loading"></Chart>
     </div>
@@ -34,6 +38,9 @@ import _ from 'lodash';
     recordList() {
       return this.$store.state.recordList;
     },
+    totalOf30days(){
+      return _.sum(_.map(this.create30DaysData,_.property('value')))
+    },
     groupedList() { // 点选’支出‘/’收入‘时，会更改本地的recordTypeValue，一旦有更改，这里的计算属性就会重新计算。
       // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       const {recordList} = this;
@@ -58,7 +65,8 @@ import _ from 'lodash';
       });
       return result;
     },
-    create30DaysData(){
+    create30DaysData() {
+      const result = _.flattenDepth(_.map(this.groupedList, 'items'), 10);
       const today = new Date();
       const array = [];
       // 创建一个容器，30天
@@ -66,18 +74,19 @@ import _ from 'lodash';
       for (let i = 0; i <= 29; i++) {
         const date = dayjs(today)
             .subtract(i, 'day').format('YYYY-MM-DD');
-        const found = _.find(this.recordList, {createdAt: date});
+        const found = _.find(result, {createdAt: date});
         array.push({
           date: date, value: found ? found.amount : 0
         });
       }
+      console.log(result);
       return array;
     },
     chartOptions() {
-      const keys=_.map(this.create30DaysData, (item)=>{
-        return item.date.substring(5)
+      const keys = _.map(this.create30DaysData, (item) => {
+        return item.date.substring(5);
       }).reverse();
-      const values=_.map(this.create30DaysData, _.property('value')).reverse();
+      const values = _.map(this.create30DaysData, _.property('value')).reverse();
 
       return {
         grid: {
@@ -156,6 +165,20 @@ export default class Statistics extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.chartTitle{
+  position: absolute;
+  padding: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  &>span{
+    font-size: 1em;
+  }
+  &>p{
+    font-weight: bold;
+    font-size: 1.2em;
+  }
+}
 .echart {
   width: 430%;
 
@@ -169,10 +192,6 @@ export default class Statistics extends Vue {
 }
 
 ::v-deep {
-  canvas {
-    margin-top: 10px !important;
-  }
-
   .statistics-types {
     &-tabs {
       .selected {

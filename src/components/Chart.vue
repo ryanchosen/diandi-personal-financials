@@ -21,6 +21,10 @@ export default class Chart extends Vue {
       (this as any).chart.hideLoading()
     }
   }
+  @Watch('options')
+  onOptionsChanged(newOption: string) {
+    (this as any).chart.setOption(newOption);
+  }
   mounted() {
     (this as any).chart = echarts.init(this.$refs.wrapper);
     (this as any).chart.setOption(this.options);
