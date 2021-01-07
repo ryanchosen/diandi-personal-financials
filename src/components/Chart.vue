@@ -22,7 +22,6 @@ export default class Chart extends Vue {
     }
   }
   mounted() {
-    console.log(this.loading);
     (this as any).chart = echarts.init(this.$refs.wrapper);
     (this as any).chart.setOption(this.options);
   }

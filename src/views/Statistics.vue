@@ -2,7 +2,7 @@
   <Layout>
     <Tabs class-prefix="statistics-types" :data-source="recordTypeList" :value.sync="recordTypeValue"/>
     <div class="echart-wrapper" ref="echartWrapper">
-      <Chart :options="option" class="echart" :loading="loading"></Chart>
+      <Chart :options="chartOptions" class="echart" :loading="loading"></Chart>
     </div>
     <ol v-if="groupedList.length>0">
       <li v-for="(group,index) in groupedList" :key="index">
@@ -26,6 +26,7 @@ import dayWeekMonthList from '@/constants/dayWeekMonthList';
 import recordTypeList from '@/constants/recordTypeList';
 import dayjs from 'dayjs';
 import {clone} from '@/lib/clone';
+import _ from 'lodash';
 
 @Component({
   components: {Tabs, Chart},
@@ -57,7 +58,27 @@ import {clone} from '@/lib/clone';
       });
       return result;
     },
-    option() {
+    create30DaysData(){
+      const today = new Date();
+      const array = [];
+      // 创建一个容器，30天
+      // 从数据库中find出匹配项塞进容器
+      for (let i = 0; i <= 29; i++) {
+        const date = dayjs(today)
+            .subtract(i, 'day').format('YYYY-MM-DD');
+        const found = _.find(this.recordList, {createdAt: date});
+        array.push({
+          date: date, value: found ? found.amount : 0
+        });
+      }
+      return array;
+    },
+    chartOptions() {
+      const keys=_.map(this.create30DaysData, (item)=>{
+        return item.date.substring(5)
+      }).reverse();
+      const values=_.map(this.create30DaysData, _.property('value')).reverse();
+
       return {
         grid: {
           left: 0,
@@ -65,7 +86,7 @@ import {clone} from '@/lib/clone';
         },
         xAxis: {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: keys,
           axisTick: {show: false},
           axisLine: {lineStyle: {color: '#666'}}
         },
@@ -74,7 +95,7 @@ import {clone} from '@/lib/clone';
           show: false
         },
         series: [{
-          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          data: values,
           type: 'line',
           symbol: 'circle',
           symbolSize: 12,
@@ -105,8 +126,6 @@ export default class Statistics extends Vue {
 
   mounted() {
     (this.$refs.echartWrapper as HTMLDivElement).scrollLeft = (this.$refs.echartWrapper as HTMLDivElement).scrollWidth;
-    // this.loading = true;
-    // setTimeout(() => {this.loading = false;}, 3000);
   }
 
   dayJS(string: string) {

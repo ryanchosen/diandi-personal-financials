@@ -35,7 +35,7 @@ export default class FormItem extends Vue {
     this.$emit('changeValue', event.target.value);
   }
 
-  x(isoString) {
+  x(isoString) { // 将值处理一下
     return dayjs(isoString).format('YYYY-MM-DD'); // 格式化，将多余的时分秒信息删除
   }
 }

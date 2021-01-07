@@ -18,6 +18,7 @@ import FormItem from '@/components/FormItem.vue';
 import NumberPad from '@/components/NumberPad.vue';
 import Tabs from '@/components/Tabs.vue';
 import recordTypeList from '@/constants/recordTypeList';
+import dayjs from 'dayjs';
 
 
 @Component({
@@ -41,7 +42,7 @@ export default class Money extends Vue {
   }
 
   record: MyRecord = {
-    tags: [], type: '-', notes: '', amount: '0', createdAt: new Date().toISOString()
+    tags: [], type: '-', notes: '', amount: '0', createdAt: dayjs(new Date()).format('YYYY-MM-DD')
   };
 
   onUpdateSelectedTags(value: string []) {
